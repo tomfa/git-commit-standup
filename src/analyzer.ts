@@ -6,7 +6,6 @@ import {
   CommitSummary,
   Config,
   CompleteSummary,
-  CompleteUserSummary,
   RepoAuthorContribution,
 } from './types';
 
@@ -132,39 +131,6 @@ export function getUserContribution({
   );
 
   return repoSummary;
-}
-
-export async function analyzeTimeSpent(
-  config: Config,
-): Promise<CompleteSummary> {
-  const commitSummaries = await getCommitSummaries(config);
-  const { firstCommitAdditionInMinutes, maxCommitDiffInMinutes } = config;
-
-  const authorWorks: CompleteUserSummary[] = await Promise.all(
-    Object.keys(commitSummaries).map(async (email) => {
-      const authorSummary = commitSummaries[email];
-      const timeSummary = await getUserContribution({
-        commits: authorSummary.commits,
-        firstCommitAdditionInMinutes,
-        maxCommitDiffInMinutes,
-      });
-      return { contributions: timeSummary, email };
-    }),
-  );
-
-  const completeSummary: CompleteSummary = {};
-
-  authorWorks.forEach((work) => {
-    const { email, contributions } = work;
-    Object.keys(contributions).forEach((repository) => {
-      if (!completeSummary[repository]) {
-        completeSummary[repository] = {};
-      }
-      completeSummary[repository][email] = contributions[repository];
-    });
-  });
-
-  return completeSummary;
 }
 
 const oldestLastSorter = (a: Commit, b: Commit) =>

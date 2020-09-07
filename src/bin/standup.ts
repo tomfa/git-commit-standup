@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
 import { getConfig } from '../config';
-import { analyzeTimeSpent } from '../analyzer';
-import { printAsCSV, printAsJSON } from '../print';
+import { getCommitSummaries } from '../analyzer';
+import { printAsJSON } from '../print';
 import logger from '../logger';
 import { parseCommandLineArgs } from './args';
 
@@ -22,13 +22,7 @@ const printReport = () => {
   }
   logger.debug('Config', config);
 
-  analyzeTimeSpent(config).then((summary) => {
-    if (config.json) {
-      printAsJSON({ summary });
-    } else {
-      printAsCSV({ summary });
-    }
-  });
+  getCommitSummaries(config).then(printAsJSON);
 };
 
 printReport();

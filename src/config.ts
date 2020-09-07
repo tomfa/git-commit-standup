@@ -5,19 +5,12 @@ import { readHomeDirectoryConfig } from './files';
 
 const DATE_FORMAT = 'YYYY-MM-DD';
 
-export const HOMEDIR_CONFIG_FILE_NAME = '.timesheetrc';
+export const HOMEDIR_CONFIG_FILE_NAME = '.standuprc';
 
 export const defaultConfig: Config = {
-  // Maximum time diff between 2 subsequent commits in minutes which are
-  // counted to be in the same coding "session"
-  maxCommitDiffInMinutes: 3 * 60,
-
-  // How many minutes should be added for the first commit of coding session
-  firstCommitAdditionInMinutes: 60,
-
   // Include commits since time x
-  since: 'always',
-  until: 'always',
+  since: 'lastworkday',
+  until: 'now',
 
   // Include merge requests
   countMerges: true,
@@ -61,6 +54,15 @@ function parseInputDate(inputDate: string | Date): Date | 'always' {
       return moment().startOf('month').toDate();
     case 'lastmonth':
       return moment().startOf('month').subtract(1, 'month').toDate();
+    case 'lastworkday':
+      // eslint-disable-next-line no-case-declarations
+      const isMonday = moment().day() === 1;
+      if (isMonday) {
+        return moment().subtract(72, 'hours').toDate();
+      }
+      return moment().subtract(24, 'hours').toDate();
+    case 'now':
+      return moment().toDate();
     case 'always':
       return 'always';
     default:
@@ -90,9 +92,9 @@ export function getConfig(
     overrides.ignoreConfigFile === true ||
     (overrides.ignoreConfigFile === undefined &&
       defaultConfig.ignoreConfigFile === true);
-  const { fileConfig, path } =
+  const { fileConfig = {}, path = undefined } =
     (!ignoreConfigFile && getHomeDirectoryConfig()) || {};
-  const config = { ...defaultConfig, ...(fileConfig || {}), ...overrides };
+  const config = { ...defaultConfig, ...fileConfig, ...overrides };
   config.since = parseInputDate(config.since);
   config.until = parseInputDate(config.until);
 

@@ -5,9 +5,6 @@ import { defaultConfig } from '../config';
 import logger from '../logger';
 
 export function parseCommandLineArgs(): Partial<Config> {
-  function int(val) {
-    return parseInt(val, 10);
-  }
   // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require
   const programVersion = '0.1.5';
   program
@@ -18,18 +15,6 @@ export function parseCommandLineArgs(): Partial<Config> {
       'Only care about commits from these emails.' +
         wrapInDefault(defaultConfig.authors),
       parseArrayArg(','),
-    )
-    .option(
-      '-d, --max-commit-diff [minutes]',
-      'max minutes between commits counted as one session.' +
-        wrapInDefault(defaultConfig.maxCommitDiffInMinutes),
-      int,
-    )
-    .option(
-      '-f, --first-commit-add [minutes]',
-      'how many minutes first commit of session should add to total.' +
-        wrapInDefault(defaultConfig.firstCommitAdditionInMinutes),
-      int,
     )
     .option(
       '-s, --since [date]',
@@ -63,8 +48,8 @@ export function parseCommandLineArgs(): Partial<Config> {
       parseBooleanArg,
     )
     .option(
-      '-i, --ignore-timesheetrc',
-      'Ignores .timesheetrc from home directory.' +
+      '-i, --ignore-standuprc',
+      'Ignores .standuprc from home directory.' +
         wrapInDefault(defaultConfig.ignoreConfigFile),
       parseArgTrueIfSpecified,
     )
@@ -88,45 +73,27 @@ export function parseCommandLineArgs(): Partial<Config> {
     logger.output(`
 Examples:
 
-  - Estimate hours of project
+  - Show commits made last workday until today (author taken from git config)
 
    $ timesheet
 
-  - Estimate hours by me@example.com
+  - Show commits from last workday by me@example.com
 
    $ timesheet -a me@example.com
 
-  - Estimate hours where developers commit seldom
-
-   $ timesheet --max-commit-diff 240
-
-  - Estimate hours in when working 5 hours before first commit of day
-
-   $ timesheet --first-commit-add 300
-
-  - Estimate hours work this month
-
-   $ timesheet --since thismonth
-
-  - Estimate hours work until 2020-01-01
-
-   $ timesheet --until 2020-01-01
-
-  For more details, visit https://github.com/tomfa/git-csv-timesheet
+  For more details, visit https://github.com/tomfa/git-commit-standup
   `);
   });
 
   program.parse(process.argv);
 
   const confArgs: Config = {
-    maxCommitDiffInMinutes: program.maxCommitDiff,
-    firstCommitAdditionInMinutes: program.firstCommitAdd,
     since: program.since,
     until: program.until,
     repositories: program.repositories,
     countMerges: program.countMerges,
     emailAliases: program.email,
-    ignoreConfigFile: program.ignoreTimesheetrc,
+    ignoreConfigFile: program.ignoreStanduprc,
     authors: program.authors,
     json: program.json,
     verbose: program.verbose,

@@ -33,8 +33,6 @@ export type RepositoryConfig = {
 };
 
 export type Config = {
-  maxCommitDiffInMinutes: number;
-  firstCommitAdditionInMinutes: number;
   since: string | Date;
   until: string | Date;
   countMerges: boolean;
