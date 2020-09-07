@@ -1,23 +1,23 @@
 {
-  "name": "git-csv-timesheet",
+  "name": "git-commit-standup",
   "version": "0.1.4",
-  "description": "Generate a CSV timesheet from your git repositories",
+  "description": "Always prepared for a standup: what did I do yesterday, what is my goal for today, and do I have any blockers?",
   "main": "index.js",
   "types": "index.d.ts",
   "bin": {
-    "timesheet": "./bin/timesheet.js"
+    "standup": "./bin/standup.js"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/tomfa/git-csv-timesheet.git"
+    "url": "https://github.com/tomfa/git-commit-standup.git"
   },
-  "keywords": ["git", "time", "reporting", "csv", "timesheet", "hours"],
+  "keywords": ["git", "time", "commit", "standup", "hours"],
   "author": "Tomas Fagerbekk",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/tomfa/git-csv-timesheet/issues"
+    "url": "https://github.com/tomfa/git-commit-standup/issues"
   },
-  "homepage": "https://github.com/tomfa/git-csv-timesheet",
+  "homepage": "https://github.com/tomfa/git-commit-standup",
   "dependencies": {
     "commander": "^6.0.0",
     "moment": "^2.10.6",
