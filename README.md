@@ -114,3 +114,5 @@ by me@companymail.com, me@gmail.com and me@oldworkplace.com.
 
 If you commit with references to an issue tracker, e.g. `#1 my commit message`,
 the script can connect and pull down information on those
+
+For more, see [issues labeled roadmap](https://github.com/tomfa/git-commit-standup/issues?q=is%3Aopen+is%3Aissue+label%3Aroadmap)
