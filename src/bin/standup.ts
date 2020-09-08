@@ -2,7 +2,7 @@
 
 import { getConfig } from '../config';
 import { getCommitSummaries } from '../analyzer';
-import { printAsJSON } from '../print';
+import { print } from '../print';
 import logger from '../logger';
 import { parseCommandLineArgs } from './args';
 
@@ -22,7 +22,7 @@ const printReport = () => {
   }
   logger.debug('Config', config);
 
-  getCommitSummaries(config).then(printAsJSON);
+  getCommitSummaries(config).then(print);
 };
 
 printReport();
